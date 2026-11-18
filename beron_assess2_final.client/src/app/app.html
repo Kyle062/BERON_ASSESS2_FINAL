@@ -1,0 +1,126 @@
+<div class="page-wrapper">
+  <!-- Success Overlay -->
+  <div class="success-overlay" *ngIf="isSubmitted">
+    <div class="success-card">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2>Request Submitted</h2>
+      <p>Your Barangay Clearance request has been successfully processed.</p>
+      <button (click)="resetForm()" class="reset-btn">Submit Another Request</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-text">
+        <h1>Barangay Clearance</h1>
+        <p>Official Document Request Portal</p>
+      </div>
+
+      <!-- Status Badge -->
+      <div class="status-badge" [ngClass]="formStatus === 'VALID' ? 'is-valid' : 'is-invalid'">
+        <span class="status-dot"></span>
+        <span>{{ formStatus === 'VALID' ? 'Ready to Submit' : 'Incomplete' }}</span>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <!-- Form Column -->
+      <div class="form-column">
+        <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+          <div class="form-header">
+            <h2>Applicant Details</h2>
+            <p>Please fill out all required fields below.</p>
+          </div>
+
+          <div class="form-grid">
+            <div class="input-group full-width">
+              <label>Full Name <span class="req">*</span></label>
+              <input formControlName="fullName" placeholder="e.g. Juan Dela Cruz">
+            </div>
+
+            <div class="input-group">
+              <label>Birthdate <span class="req">*</span></label>
+              <input type="date" formControlName="birthdate" class="modern-date-input">
+            </div>
+
+            <div class="input-group">
+              <label>Contact Number <span class="req">*</span></label>
+              <input formControlName="contactNumber" placeholder="09XXXXXXXXX" maxlength="11">
+              <div *ngIf="requestForm.get('contactNumber')?.touched && requestForm.get('contactNumber')?.hasError('invalidPhPhone')" class="error-text">
+                Must be an 11-digit number starting with 09.
+              </div>
+            </div>
+
+            <div class="input-group full-width">
+              <label>Complete Address <span class="req">*</span></label>
+              <input formControlName="address" placeholder="House No., Street, Purok, Barangay">
+            </div>
+
+            <div class="input-group full-width">
+              <label>Purpose of Request <span class="req">*</span></label>
+              <select formControlName="purpose">
+                <option value="" disabled selected>Select a purpose</option>
+                <option *ngFor="let p of purposes" [value]="p">{{ p }}</option>
+              </select>
+            </div>
+
+            <!-- Conditional "Others" Field -->
+            <div class="input-group full-width animated-fade" *ngIf="requestForm.get('purpose')?.value === 'Others'">
+              <label>Please specify <span class="req">*</span></label>
+              <input formControlName="otherPurpose" placeholder="Please state your specific purpose">
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" [disabled]="requestForm.invalid" class="submit-btn">
+              Submit Request
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Preview Column -->
+      <div class="preview-column">
+        <div class="preview-panel">
+          <div class="preview-header">
+            <h3>Live Preview</h3>
+          </div>
+
+          <div class="preview-content">
+            <div class="preview-item">
+              <span class="preview-label">Full Name</span>
+              <span class="preview-value">{{ requestForm.get('fullName')?.value || '—' }}</span>
+            </div>
+            <div class="preview-item">
+              <span class="preview-label">Birthdate</span>
+              <span class="preview-value">{{ requestForm.get('birthdate')?.value || '—' }}</span>
+            </div>
+            <div class="preview-item">
+              <span class="preview-label">Address</span>
+              <span class="preview-value">{{ requestForm.get('address')?.value || '—' }}</span>
+            </div>
+            <div class="preview-item">
+              <span class="preview-label">Contact Number</span>
+              <span class="preview-value">{{ requestForm.get('contactNumber')?.value || '—' }}</span>
+            </div>
+            <div class="preview-item">
+              <span class="preview-label">Purpose</span>
+              <span class="preview-value highlight">
+                {{
+                  requestForm.get('purpose')?.value === 'Others'
+                    ? (requestForm.get('otherPurpose')?.value || 'Others')
+                    : (requestForm.get('purpose')?.value || '—')
+                }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

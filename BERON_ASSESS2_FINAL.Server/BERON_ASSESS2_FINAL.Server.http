@@ -1,0 +1,6 @@
+@BERON_ASSESS2_FINAL.Server_HostAddress = http://localhost:5243
+
+GET {{BERON_ASSESS2_FINAL.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

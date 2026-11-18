@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="beron_assess2_final.client/beron_assess2_final.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="BERON_ASSESS2_FINAL.Server/BERON_ASSESS2_FINAL.Server.csproj" />
+</Solution>
